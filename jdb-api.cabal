@@ -1,0 +1,189 @@
+cabal-version: 1.12
+
+name:           jdb-api
+version:        0.6.0.0
+description:    Please see the README at <https://gitlab.com/jjba-projects/jdb-api>
+homepage:       https://gitlab.com/jjba-projects/jdb-api
+bug-reports:    https://gitlab.com/jjba-projects/jdb-api/-/issues
+author:         Josep Bigorra
+maintainer:     Josep Bigorra <jjbigorra@gmail.com>
+copyright:      2023 Josep Bigorra
+license:        GPL-3
+build-type:     Simple
+                
+extra-source-files:
+    README.org
+    CHANGELOG.org
+
+source-repository head
+  type: git
+  location: https://gitlab.com/jjba-projects/jdb-api
+  subdir: jdb-api
+
+library
+  exposed-modules:
+      -- λ main
+      JDBAPI.Config
+      JDBAPI.Boot
+      
+      -- λ servant
+      JDBAPI.Servant.ApiSetup
+      JDBAPI.Servant.ApiSpec
+      JDBAPI.Servant.JDBAPIRoutes
+      JDBAPI.Servant.Utilities
+      
+      -- λ interactions with jdb-api's system
+      JDBAPI.Interaction.JDBAPI
+
+      -- λ free monadic definition of jdb-api's system and possible interactions
+      JDBAPI.Free.JDBAPI
+      JDBAPI.Free.Clock
+      JDBAPI.Free.Logger
+
+      -- λ domain models
+      JDBAPI.Model.Config
+
+      -- λ clock
+      JDBAPI.Clock.LiveClock
+
+      -- λ logging
+      JDBAPI.Console.Logger
+
+      -- λ custom prelude
+      JDBAPI.Protolude
+
+      
+  other-modules:
+      Paths_jdb_api
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
+  default-extensions:
+      DataKinds
+      DefaultSignatures
+      DuplicateRecordFields
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiWayIf
+      NamedFieldPuns
+      NoImplicitPrelude
+      OverloadedStrings
+      PartialTypeSignatures
+      RecordWildCards
+      TypeFamilies
+      ViewPatterns
+
+  build-depends:
+      aeson
+    , base
+    , bytestring
+    , containers
+    , keuringsdienst > 1.0.0.0
+    , keys
+    , mtl
+    , openapi3
+    , optics
+    , optparse-applicative
+    , relude
+    , time
+    , filepath
+    , directory
+    , Glob
+    , servant
+    , servant-auth
+    , servant-auth-server
+    , servant-openapi3
+    , servant-server
+    , text
+    , uuid
+    , wai
+    , wai-cors
+    , wai-extra
+    , wai-rate-limit
+    , warp
+    , smtp-mail
+    , mime-mail
+    , base64-bytestring
+    , neat-interpolation
+    , HTTP
+    , free-alacarte > 1.0.0.0
+    , tomland
+  default-language: GHC2021
+
+executable jdb-api-exe
+  main-is: Main.hs
+  other-modules:
+      Paths_jdb_api
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
+  default-extensions:
+      DataKinds
+      DefaultSignatures
+      DuplicateRecordFields
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiWayIf
+      NamedFieldPuns
+      NoImplicitPrelude
+      OverloadedStrings
+      PartialTypeSignatures
+      RecordWildCards
+      TypeFamilies
+      ViewPatterns
+
+  build-depends:
+      base
+      , jdb-api
+  default-language: GHC2021
+
+test-suite spec
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_jdb_api
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -threaded -rtsopts -with-rtsopts=-N
+  default-extensions:
+      DataKinds
+      DefaultSignatures
+      DuplicateRecordFields
+      EmptyDataDecls
+      ExistentialQuantification
+      FlexibleContexts
+      FlexibleInstances
+      FunctionalDependencies
+      GADTs
+      InstanceSigs
+      KindSignatures
+      LambdaCase
+      MultiWayIf
+      NamedFieldPuns
+      NoImplicitPrelude
+      OverloadedStrings
+      PartialTypeSignatures
+      RecordWildCards
+      TypeFamilies
+      ViewPatterns
+
+  build-depends:
+    base
+    , jdb-api
+    , tasty
+    , tasty-hunit
+  default-language: GHC2021    
