@@ -57,7 +57,7 @@ makePostgresPool cfg = do
 
   let healthSess = Hasql.Session.sql "SELECT 1"
   s <- liftIO $ Hasql.Pool.use pool healthSess
-  either (BL.putStrLn . fromString . show) pure s
+  either (BL.putStr . fromString . show) pure s
 
   pure pool
   where
