@@ -117,6 +117,17 @@ library
     , HTTP
     , free-alacarte
     , tomland
+    , postgresql-libpq
+    , wai-rate-limit-redis
+    , hasql
+    , hasql-implicits
+    , hasql-migration
+    , hasql-optparse-applicative
+    , hasql-pool
+    , hasql-th
+    , hasql-transaction
+    , hedis
+
   default-language: GHC2021
 
 executable jdb-api-exe
