@@ -17,6 +17,7 @@ import Data.UUID hiding (fromString)
 import Servant as S
 import Servant.Auth as SA
 import Servant.Auth.Server as SAS
+import JDBAPI.Servant.JDBAPIRoutes
 
 type JDBAPIAPIServer =
   SwaggerAPI

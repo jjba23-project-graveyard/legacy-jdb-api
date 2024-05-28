@@ -1,0 +1,46 @@
+[servant]
+port = 50050
+host = "127.0.0.1"
+
+[postgresql]
+user = "jdbapi_admin"
+password-file = "/run/secrets/jdbapi_postgres_key"
+port = 55432
+name = "jdbapi_database"
+pool-size = 30
+host = "localhost"
+run-migrations = true
+
+[redis]
+port = 63379
+password-file = "/run/secrets/jdbapi_redis_key"
+
+[cors]
+origins = [
+  "https://jdbapi.jointhefreeworld.org",
+  "https://www.jdbapi.jointhefreeworld.org"
+]
+methods = [ "OPTIONS", "POST", "PUT", "DELETE", "PATCH", "GET" ]
+request-headers = [ "Authorization", "Content-Type", "Credentials", "Accept" ]
+
+[cookie]
+same-site = "SameSiteStrict"
+secure = "Secure"
+max-age = 7200
+path = "/"
+domain = "jdbapi.jointhefreeworld.org"
+session-cookie-name = "JWT-Cookie"
+
+[mail]
+send-timeout-seconds = 10
+host = "email-smtp.eu-west-3.amazonaws.com"
+user = "AKIA4DBMA2YMGZ3RGWX5"
+password-file = "/run/secrets/jdbapi_email_key"
+sender-name = "No-Reply - Jdbapi Bot"
+sender-mail = "noreply@jointhefreeworld.org"
+
+[web-frontend]
+base-url = "https://jdbapi.jointhefreeworld.org"
+
+[dev]
+reported-version = "production"
