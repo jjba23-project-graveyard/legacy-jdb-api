@@ -4,28 +4,16 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
 
-module JDB.Config.JDB (Request, validateRequest) where
+module JDB.Model.JDB (Request, validateRequest) where
 
 import Data.Aeson hiding (Success)
 import Data.OpenApi
+import Data.Time
 import Data.UUID
 import Keuringsdienst
 import Keuringsdienst.Helpers
 import Optics
-import RIO hiding ((^.))
-import RIO.Time
 import Relude
-import Text.Read
-import WikiMusic.Model.Thread
-
-validateRequest :: Request -> ValidationResult
-validateRequest x =
-  (x ^. #identifier)
-    |?| isNonEmptyText
-    <> (x ^. #clientIdentifier)
-      |?| isNonEmptyText
-    <> (x ^. #activityIdentifier)
-      |?| isNonEmptyText
 
 data Request = Request
   { identifier :: UUID,
@@ -38,3 +26,12 @@ data Request = Request
   deriving (Eq, Show, Generic, FromJSON, ToJSON, ToSchema)
 
 makeFieldLabelsNoPrefix ''Request
+
+validateRequest :: Request -> ValidationResult
+validateRequest x =
+  show (x ^. #identifier)
+    |?| isNonEmptyText
+    <> show (x ^. #clientIdentifier)
+      |?| isNonEmptyText
+    <> show (x ^. #activityIdentifier)
+      |?| isNonEmptyText

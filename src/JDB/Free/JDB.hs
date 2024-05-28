@@ -1,6 +1,7 @@
 module JDB.Free.JDB
   ( health,
     HealthService (..),
+    JDB (..),
   )
 where
 
