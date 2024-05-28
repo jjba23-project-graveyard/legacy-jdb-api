@@ -14,3 +14,8 @@ Welcome to the JDB API
 <img src="https://img.shields.io/badge/GraphViz-000?logo=graphite&logoColor=fff&style=plastic" alt="GraphViz"/>
 </div>
 #+end_html
+
+** Running
+#+begin_src shell
+  nix run .# -- "resources/config/run-local.toml"
+#+end_src

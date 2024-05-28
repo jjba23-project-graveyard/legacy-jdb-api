@@ -1,11 +1,10 @@
-
 {-# LANGUAGE DeriveAnyClass #-}
 {-# LANGUAGE OverloadedLabels #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
 
-module JDBAPI.Model.Config where      
+module JDBAPI.Model.Config 
   ( AppConfig (..),
     PostgreSQLConfig (..),
     RedisConfig (..),
@@ -19,7 +18,7 @@ module JDBAPI.Model.Config where
 where
 
 import Optics
-import RIO hiding ((^.))
+import Relude hiding ()
 import Toml
 
 data PostgreSQLConfig = PostgreSQLConfig

@@ -51,6 +51,7 @@ library
 
       -- λ custom prelude
       JDBAPI.Protolude
+      JDBAPI.Health
 
       
   other-modules:

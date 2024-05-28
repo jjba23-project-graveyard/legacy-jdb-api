@@ -5,7 +5,10 @@
 module JDBAPI.Config (readConfig) where
 
 import Data.Text.Encoding qualified
-import RIO.ByteString.Lazy qualified as BL
+import Relude
+import Data.ByteString.Lazy qualified as BL
+import Optics
+import Data.Text(pack, unpack, strip)
 import Toml
 import JDBAPI.Model.Config
 import JDBAPI.Protolude

@@ -1,6 +1,6 @@
-module JDBAPI.Free.JDBAPI where      
-  ( health
-    HealthService (..),
+module JDBAPI.Free.JDBAPI 
+  ( health,
+    HealthService(..),
   )
 where
 
@@ -12,5 +12,5 @@ data HealthService a
   = Health (Text -> a)
   deriving (Functor)
 
-health :: (Logger :<: f) => Free f Text
-health = injectFree (Health message Pure)
+health :: (HealthService :<: f) => Free f Text
+health = injectFree (Health Pure)

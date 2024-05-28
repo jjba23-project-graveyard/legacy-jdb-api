@@ -1,4 +1,4 @@
-module JDBAPI.Servant.ApiSpec where
+module JDBAPI.Servant.ApiSpec 
   ( JDBAPIPrivateAPI,
     JDBAPIPublicAPI,
     JDBAPIAPIServer,
