@@ -17,7 +17,6 @@ display_name VARCHAR(1024) NOT NULL,
 description VARCHAR NOT NULL,
 created_at TIMESTAMPTZ NOT NULL,
 timeslot_gen_mode VARCHAR NOT NULL,
-timeslot_gen_expr VARCHAR NOT NULL
 );
 
 CREATE TABLE clients(

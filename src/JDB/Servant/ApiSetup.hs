@@ -36,4 +36,4 @@ mkApp _ = do
 
 wiredUpPublicServer :: Server JDBPublicAPI
 wiredUpPublicServer =
-  healthRoute
+  healthRoute :<|> getActivitiesRoute :<|> getActivityRoute
