@@ -1,7 +1,6 @@
 module JDB.Protolude
-  ( module Relude
+  ( module Relude,
   )
 where
 
 import Relude
-   

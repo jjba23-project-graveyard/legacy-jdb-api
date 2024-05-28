@@ -1,1 +1,1 @@
-module JDB.Interaction.JDB where    
+module JDB.Interaction.JDB where

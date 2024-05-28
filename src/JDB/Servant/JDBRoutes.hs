@@ -1,11 +1,10 @@
-module JDB.Servant.JDBRoutes where    
+module JDB.Servant.JDBRoutes where
 
-import Relude
-import Servant
+import Free.AlaCarte
 import JDB.Free.JDB
 import JDB.Health ()
-import Free.AlaCarte
+import Relude
+import Servant
 
 healthRoute :: Handler Text
 healthRoute = liftIO (exec @HealthService $ health)
-

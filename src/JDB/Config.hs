@@ -4,14 +4,14 @@
 
 module JDB.Config (readConfig) where
 
-import Data.Text.Encoding qualified
-import Relude
 import Data.ByteString.Lazy qualified as BL
-import Optics
-import Data.Text(pack, unpack, strip)
-import Toml
+import Data.Text (pack, strip, unpack)
+import Data.Text.Encoding qualified
 import JDB.Model.Config
 import JDB.Protolude
+import Optics
+import Relude
+import Toml
 
 readConfig :: (MonadIO m) => Text -> m (Either Text AppConfig)
 readConfig filePath = do

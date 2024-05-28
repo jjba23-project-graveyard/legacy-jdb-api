@@ -52,6 +52,7 @@ library
       -- λ custom prelude
       JDB.Protolude
       JDB.Health
+      JDB.Config.JDB
 
       
   other-modules:

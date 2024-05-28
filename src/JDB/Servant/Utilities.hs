@@ -1,1 +1,1 @@
-module JDB.Servant.Utilities where    
+module JDB.Servant.Utilities where

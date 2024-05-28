@@ -8,14 +8,14 @@ module JDB.Boot
 where
 
 import Control.Monad
-import Network.Wai.Handler.Warp
-import Optics
-import Relude
-import Data.Text(pack, unpack)
+import Data.ByteString.Lazy qualified as BL
+import Data.Text (pack, unpack)
 import JDB.Config
 import JDB.Model.Config
 import JDB.Servant.ApiSetup
-import Data.ByteString.Lazy qualified as BL
+import Network.Wai.Handler.Warp
+import Optics
+import Relude
 
 boot :: (MonadIO m) => m ()
 boot = do
@@ -31,8 +31,8 @@ boot = do
     doRun cfg = do
       startJDBAPI cfg
 
-startJDBAPI :: (MonadIO m) => AppConfig ->  m ()
-startJDBAPI cfg  = do
+startJDBAPI :: (MonadIO m) => AppConfig -> m ()
+startJDBAPI cfg = do
   _ <- liftIO . BL.putStr $ "Starting REST API ..."
   liftIO $ runSettings apiSettings =<< mkApp cfg
   where

@@ -6,8 +6,8 @@ import Data.Text
 import Data.Time
 import Free.AlaCarte
 import GHC.Show
-import Relude hiding (Show, show)
 import JDB.Free.Logger
+import Relude hiding (Show, show)
 
 instance Exec Logger where
   {-# INLINEABLE execAlgebra #-}
@@ -41,4 +41,3 @@ iso8601 = do
   n <- liftIO getCurrentTime
   let n' = pack $ formatTime defaultTimeLocale (unpack "%Y-%m-%dT%H:%M:%SZ") n
   pure $ "[" <> n' <> "]"
-

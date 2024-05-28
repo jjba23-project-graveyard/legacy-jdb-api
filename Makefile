@@ -29,4 +29,3 @@ build:
 	nix build --extra-experimental-features 'nix-command flakes' --accept-flake-config --system x86_64-linux
 build-arm:
 	nix build --extra-experimental-features 'nix-command flakes' --accept-flake-config --system aarch64-linux
-    

@@ -1,6 +1,6 @@
-module JDB.Free.JDB 
+module JDB.Free.JDB
   ( health,
-    HealthService(..),
+    HealthService (..),
   )
 where
 
@@ -14,3 +14,7 @@ data HealthService a
 
 health :: (HealthService :<: f) => Free f Text
 health = injectFree (Health Pure)
+
+type JDB :: Type -> Type
+data JDB a
+  = GetRequests (Text -> a)
