@@ -16,8 +16,11 @@ healthRoute = liftIO (exec @HealthService $ health)
 getActivitiesRoute :: Handler [ActivityResponse]
 getActivitiesRoute = do
   now <- liftIO getZonedTime
+  _ <- print now
   uid <- liftIO nextRandom
+  _ <- print uid
   zone <- liftIO getCurrentTimeZone
+  _ <- print zone
   pure
     [ ActivityResponse
         { identifier = uid,
@@ -30,11 +33,20 @@ getActivitiesRoute = do
             ],
           availabilities =
             [ ( TimeRange
-                  { slotStart = addSecondsToZonedTime zone (12 * x) now,
-                    slotEnd = addSecondsToZonedTime zone (123456 * x) now
+                  { slotStart = addSecondsToZonedTime zone (12) now,
+                    slotEnd = addSecondsToZonedTime zone (123456 * 2) now
+                  }
+              ),
+              ( TimeRange
+                  { slotStart = addSecondsToZonedTime zone (12 * 3) now,
+                    slotEnd = addSecondsToZonedTime zone (123456 * 3) now
+                  }
+              ),
+              ( TimeRange
+                  { slotStart = addSecondsToZonedTime zone (12 * 4) now,
+                    slotEnd = addSecondsToZonedTime zone (123456 * 4) now
                   }
               )
-              | x <- [1 .. 10]
             ]
         }
     ]
