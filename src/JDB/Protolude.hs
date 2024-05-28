@@ -1,4 +1,4 @@
-module JDBAPI.Protolude
+module JDB.Protolude
   ( module Relude
   )
 where

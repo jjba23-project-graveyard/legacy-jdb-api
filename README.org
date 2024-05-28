@@ -16,6 +16,15 @@ Welcome to the JDB API
 #+end_html
 
 ** Running
+
+Some secrets are needed
+#+begin_src shell
+  touch "resources/secrets/postgresql"
+  touch "resources/secrets/redis"
+  touch "resources/secrets/amazonses"
+#+end_src
+
+Then you can run:
 #+begin_src shell
   nix run .# -- "resources/config/run-local.toml"
 #+end_src

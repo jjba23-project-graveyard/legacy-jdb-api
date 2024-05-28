@@ -1,7 +1,5 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module JDBAPI.Health (
-  
-                     ) where
+module JDB.Health (                     ) where
 
 
 
@@ -11,9 +9,9 @@ import Data.Time
 import Free.AlaCarte
 import GHC.Show
 import Relude hiding (Show, show)
-import JDBAPI.Free.JDBAPI
+import JDB.Free.JDB
 
-instance Exec Health where
+instance Exec HealthService where
   {-# INLINEABLE execAlgebra #-}
-  execAlgebra (Health next) = pure "UP" >>= next
+  execAlgebra (Health next) = next "UP"
 

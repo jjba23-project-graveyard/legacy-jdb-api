@@ -2,7 +2,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
 
-module JDBAPI.Config (readConfig) where
+module JDB.Config (readConfig) where
 
 import Data.Text.Encoding qualified
 import Relude
@@ -10,8 +10,8 @@ import Data.ByteString.Lazy qualified as BL
 import Optics
 import Data.Text(pack, unpack, strip)
 import Toml
-import JDBAPI.Model.Config
-import JDBAPI.Protolude
+import JDB.Model.Config
+import JDB.Protolude
 
 readConfig :: (MonadIO m) => Text -> m (Either Text AppConfig)
 readConfig filePath = do

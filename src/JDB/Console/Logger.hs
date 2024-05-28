@@ -1,13 +1,13 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module JDBAPI.Console.Logger () where
+module JDB.Console.Logger () where
 
 import Data.Text
 import Data.Time
 import Free.AlaCarte
 import GHC.Show
 import Relude hiding (Show, show)
-import JDBAPI.Free.Logger
+import JDB.Free.Logger
 
 instance Exec Logger where
   {-# INLINEABLE execAlgebra #-}

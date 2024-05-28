@@ -1,8 +1,8 @@
 module Main (main) where
 
 import Control.Monad.IO.Class
-import JDBAPI.Boot qualified
-import JDBAPI.Protolude
+import JDB.Boot qualified
+import JDB.Protolude
 
 main :: (MonadIO m) => m ()
-main = liftIO $ JDBAPI.Boot.boot
+main = liftIO $ JDB.Boot.boot

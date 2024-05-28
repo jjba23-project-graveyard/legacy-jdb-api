@@ -4,7 +4,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
 
-module JDBAPI.Model.Config 
+module JDB.Model.Config 
   ( AppConfig (..),
     PostgreSQLConfig (..),
     RedisConfig (..),

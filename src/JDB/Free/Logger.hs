@@ -1,4 +1,4 @@
-module JDBAPI.Free.Logger
+module JDB.Free.Logger
   ( logInfo,
     logError,
     logDebug,

@@ -1,4 +1,4 @@
-module JDBAPI.Free.Clock
+module JDB.Free.Clock
   ( timeElapsedUntilNow,
     now,
     Clock (..),

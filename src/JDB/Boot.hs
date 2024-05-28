@@ -2,7 +2,7 @@
 {-# LANGUAGE UndecidableInstances #-}
 {-# LANGUAGE NoFieldSelectors #-}
 
-module JDBAPI.Boot
+module JDB.Boot
   ( boot,
   )
 where
@@ -10,29 +10,30 @@ where
 import Control.Monad
 import Network.Wai.Handler.Warp
 import Optics
-import System.Environment
-import JDBAPI.Config
-import JDBAPI.Protolude
-import JDBAPI.Servant.ApiSetup
+import Relude
+import Data.Text(pack, unpack)
+import JDB.Config
+import JDB.Model.Config
+import JDB.Servant.ApiSetup
+import Data.ByteString.Lazy qualified as BL
 
 boot :: (MonadIO m) => m ()
 boot = do
   args <- liftIO getArgs
-  let maybeConfigPath = fmap pack (headMaybe args)
-  case maybeConfigPath of
-    Nothing -> crashWithNoConfigFile args
-    Just configPath -> do
-      cfg <- readConfig configPath
+  case nonEmpty args of
+    Just (x :| []) -> do
+      cfg <- readConfig (pack x)
       liftIO $ either crashWithBadConfig doRun cfg
+    _ -> crashWithNoConfigFile args
   where
     crashWithNoConfigFile args = error $ "No path to a config file was specified! Args: " <> show args
     crashWithBadConfig e = error ("Bad config could not be parsed! " <> show e)
     doRun cfg = do
-      startJDBAPIAPI cfg
+      startJDBAPI cfg
 
-startJDBAPIAPI :: (MonadIO m) => AppConfig ->  m ()
-startJDBAPIAPI cfg  = do
-  liftIO . BL.putStrLn $ "Starting REST API ..."
+startJDBAPI :: (MonadIO m) => AppConfig ->  m ()
+startJDBAPI cfg  = do
+  _ <- liftIO . BL.putStr $ "Starting REST API ..."
   liftIO $ runSettings apiSettings =<< mkApp cfg
   where
     apiSettings = setPort (cfg ^. #servant % #port) defaultSettings

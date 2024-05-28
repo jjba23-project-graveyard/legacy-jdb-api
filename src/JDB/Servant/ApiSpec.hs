@@ -1,8 +1,8 @@
-module JDBAPI.Servant.ApiSpec 
-  ( JDBAPIPrivateAPI,
-    JDBAPIPublicAPI,
-    JDBAPIAPIServer,
-    JDBAPIAPIDocsServer,
+module JDB.Servant.ApiSpec 
+  ( 
+    JDBPublicAPI,
+    JDBAPIServer,
+    JDBAPIDocsServer,
   )
 where
 
@@ -17,17 +17,18 @@ import Data.UUID hiding (fromString)
 import Servant as S
 import Servant.Auth as SA
 import Servant.Auth.Server as SAS
-import JDBAPI.Servant.JDBAPIRoutes
+import JDB.Servant.JDBRoutes
+import Data.Text
 
-type JDBAPIAPIServer =
+type JDBAPIServer =
   SwaggerAPI
-    :<|> JDBAPIPublicAPI
+    :<|> JDBPublicAPI
 
-type JDBAPIAPIDocsServer = JDBAPIPublicAPI 
+type JDBAPIDocsServer = JDBPublicAPI 
 
-type JDBAPIHealthAPI =
+type JDBHealthAPI =
   "health" :> Get '[JSON] Text
 
-type JDBAPIPublicAPI = JDBAPIHealthAPI
+type JDBPublicAPI = JDBHealthAPI
 
 type SwaggerAPI = "swagger.json" :> Get '[JSON] Data.OpenApi.OpenApi

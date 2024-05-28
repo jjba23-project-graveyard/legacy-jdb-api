@@ -1,4 +1,4 @@
-module JDBAPI.Free.JDBAPI 
+module JDB.Free.JDB 
   ( health,
     HealthService(..),
   )

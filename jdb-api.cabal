@@ -23,35 +23,35 @@ source-repository head
 library
   exposed-modules:
       -- λ main
-      JDBAPI.Config
-      JDBAPI.Boot
+      JDB.Config
+      JDB.Boot
       
       -- λ servant
-      JDBAPI.Servant.ApiSetup
-      JDBAPI.Servant.ApiSpec
-      JDBAPI.Servant.JDBAPIRoutes
-      JDBAPI.Servant.Utilities
+      JDB.Servant.ApiSetup
+      JDB.Servant.ApiSpec
+      JDB.Servant.JDBRoutes
+      JDB.Servant.Utilities
       
       -- λ interactions with jdb-api's system
-      JDBAPI.Interaction.JDBAPI
+      JDB.Interaction.JDB
 
       -- λ free monadic definition of jdb-api's system and possible interactions
-      JDBAPI.Free.JDBAPI
-      JDBAPI.Free.Clock
-      JDBAPI.Free.Logger
+      JDB.Free.JDB
+      JDB.Free.Clock
+      JDB.Free.Logger
 
       -- λ domain models
-      JDBAPI.Model.Config
+      JDB.Model.Config
 
       -- λ clock
-      JDBAPI.Clock.LiveClock
+      JDB.Clock.LiveClock
 
       -- λ logging
-      JDBAPI.Console.Logger
+      JDB.Console.Logger
 
       -- λ custom prelude
-      JDBAPI.Protolude
-      JDBAPI.Health
+      JDB.Protolude
+      JDB.Health
 
       
   other-modules:
