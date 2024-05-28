@@ -85,7 +85,7 @@ library
     , base
     , bytestring
     , containers
-    , keuringsdienst > 1.0.0.0
+    , keuringsdienst
     , keys
     , mtl
     , openapi3
@@ -108,12 +108,12 @@ library
     , wai-extra
     , wai-rate-limit
     , warp
-    , smtp-mail
+    , smtp-mail < 0.4.0.0
     , mime-mail
     , base64-bytestring
     , neat-interpolation
     , HTTP
-    , free-alacarte > 1.0.0.0
+    , free-alacarte
     , tomland
   default-language: GHC2021
 
