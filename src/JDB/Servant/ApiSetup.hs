@@ -11,6 +11,8 @@ where
 
 import Data.OpenApi qualified
 import Data.Proxy
+import Database.Redis qualified as Redis
+import Hasql.Pool qualified
 import JDB.Model.Config
 import JDB.Servant.ApiSpec
 import JDB.Servant.JDBRoutes
@@ -28,8 +30,8 @@ apiProxy = Proxy
 docsProxy :: Proxy JDBAPIDocsServer
 docsProxy = Proxy
 
-mkApp :: AppConfig -> IO Application
-mkApp _ = do
+mkApp :: AppConfig -> Hasql.Pool.Pool -> Redis.Connection -> IO Application
+mkApp _ _ _ = do
   let apiItself = swagger :<|> wiredUpPublicServer
 
   pure $ serve apiProxy apiItself

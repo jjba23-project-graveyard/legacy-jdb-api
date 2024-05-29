@@ -5,14 +5,14 @@ host = "127.0.0.1"
 [postgresql]
 user = "jdbapi_admin"
 password-file = "./resources/secrets/postgresql"
-port = 55432
+port = 54432
 name = "jdbapi_database"
 pool-size = 30
 host = "localhost"
 run-migrations = true
 
 [redis]
-port = 63379
+port = 63779
 password-file = "./resources/secrets/redis"
 
 [cors]
@@ -33,7 +33,7 @@ send-timeout-seconds = 10
 host = "email-smtp.eu-west-3.amazonaws.com"
 user = "someUser"
 password-file = "./resources/secrets/amazonses"
-sender-name = "No-Reply - Jdbapi Bot"
+sender-name = "No-Reply - JDB Bot"
 sender-mail = "my@org.org"
 
 [web-frontend]

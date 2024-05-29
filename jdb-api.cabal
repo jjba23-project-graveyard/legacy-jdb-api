@@ -53,6 +53,7 @@ library
       JDB.Protolude
       JDB.Health
       JDB.Model.JDB
+      JDB.PostgreSQL.Migration
 
       
   other-modules:

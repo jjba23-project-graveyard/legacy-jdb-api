@@ -1,0 +1,26 @@
+services:
+  postgres_jdbapi:
+    container_name: postgres_jdbapi
+    image: postgres:15.5
+    environment:
+      - POSTGRES_USER=jdbapi_admin
+      - POSTGRES_PASSWORD=HVy2PHY92TPx2wCZQTJNwdDntZEDvEXpCJjokvE83-Y-cE3
+      - POSTGRES_DB=jdbapi_database
+
+    ports:
+      - "54432:5432"
+    restart: always
+    
+  cache_jdbapi:
+    container_name: cache_jdbapi
+    image: redis:7.2.4
+    restart: always
+    ports:
+      - "63779:6379"
+    command: redis-server --save 20 1 --loglevel warning --requirepass xck.LK-m9fzLVeV6C!DQNzP-b7iXysD3!R6_s9CN*i-sjJQ
+    volumes: 
+      - cache:/data
+    
+volumes:
+  cache:
+    driver: local
