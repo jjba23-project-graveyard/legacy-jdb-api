@@ -1,3 +1,21 @@
+CREATE TABLE clients(
+identifier UUID NOT NULL,
+display_name VARCHAR(1024) NOT NULL,
+phone_number VARCHAR(512) NOT NULL,
+email_address VARCHAR(1024) NOT NULL,
+UNIQUE(identifier),
+PRIMARY KEY (identifier)
+);
+
+CREATE TABLE activities(
+identifier UUID NOT NULL,
+display_name VARCHAR(1024) NOT NULL,
+description VARCHAR NOT NULL,
+created_at TIMESTAMPTZ NOT NULL,
+timeslot_gen_mode VARCHAR NOT NULL,
+UNIQUE(identifier),
+PRIMARY KEY (identifier)
+);
 
 
 CREATE TABLE requests(
@@ -11,22 +29,17 @@ UNIQUE(identifier),
 PRIMARY KEY (identifier)
 );
 
-CREATE TABLE activities(
-identifier UUID NOT NULL,
-display_name VARCHAR(1024) NOT NULL,
-description VARCHAR NOT NULL,
-created_at TIMESTAMPTZ NOT NULL,
-timeslot_gen_mode VARCHAR NOT NULL,
-);
 
-CREATE TABLE clients(
+CREATE TABLE payments(
 identifier UUID NOT NULL,
-display_name VARCHAR(1024) NOT NULL,
-phone_number VARCHAR(512) NOT NULL,
-email_address VARCHAR(1024) NOT NULL,
+created_at TIMESTAMPTZ NOT NULL,
+payment_amount DECIMAL(12,4) NOT NULL,
+currency VARCHAR(100) NOT NULL,
+payment_status VARCHAR NOT NULL,
 UNIQUE(identifier),
 PRIMARY KEY (identifier)
 );
+
 
 CREATE TABLE reservations(
 identifier UUID NOT NULL,
@@ -36,16 +49,6 @@ slot_end TIMESTAMPTZ NOT NULL,
 payment_identifier UUID NULL REFERENCES payments(identifier),
 activity_identifier UUID NOT NULL REFERENCES activities(identifier),
 created_at TIMESTAMPTZ NOT NULL,
-UNIQUE(identifier),
-PRIMARY KEY (identifier)
-);
-
-CREATE TABLE payments(
-identifier UUID NOT NULL,
-created_at TIMESTAMPTZ NOT NULL,
-payment_amount DECIMAL(12,4) NOT NULL,
-currency VARCHAR(100) NOT NULL,
-payment_status VARCHAR NOT NULL,
 UNIQUE(identifier),
 PRIMARY KEY (identifier)
 );
