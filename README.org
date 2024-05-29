@@ -23,12 +23,14 @@ Then you can run:
   # or nix run .# -- "resources/config/run-local.toml"
 #+end_src
 
+The API will start at port ~50051~ according to the .toml configuration file. If you visit the ~/swagger.json~ route you will obtain the Swagger API specification for the JDB API.
+
 You will need a PostgreSQL database running and a Redis instance too:
 #+begin_src shell
   make spin-up-containers-local
 #+end_src
 
-Some secrets are needed
+*No secrets* are stored in config files. We only store the location of files containing secrets. Thus, some secret files are needed.
 #+begin_src shell
   touch "resources/secrets/postgresql"
   touch "resources/secrets/redis"

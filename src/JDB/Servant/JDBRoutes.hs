@@ -23,14 +23,17 @@ getActivitiesRoute = do
   _ <- print zone
   pure
     [ ActivityResponse
-        { identifier = uid,
-          displayName = "Some Activity you can Book",
-          description = "Do I really want to write something in the description ?",
-          createdAt = now,
-          timeslotGenMode = Daily,
-          offlineRanges =
-            [ (OfflineRange {identifier = uid, timeRange = TimeRange {slotStart = now, slotEnd = addSecondsToZonedTime zone (123 * 3) now}, createdAt = now, activityIdentifier = uid})
-            ],
+        { activity =
+            Activity
+              { identifier = uid,
+                displayName = "Some Activity you can Book",
+                description = "Do I really want to write something in the description ?",
+                timeslotGenMode = Daily,
+                unitCost = "20",
+                createdBy = uid,
+                createdAt = now,
+                updatedAt = Nothing
+              },
           availabilities =
             [ ( TimeRange
                   { slotStart = addSecondsToZonedTime zone (12) now,

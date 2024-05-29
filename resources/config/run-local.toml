@@ -1,5 +1,5 @@
 [servant]
-port = 50050
+port = 50051
 host = "127.0.0.1"
 
 [postgresql]

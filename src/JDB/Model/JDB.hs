@@ -144,11 +144,7 @@ makeFieldLabelsNoPrefix ''OfflineRange
 --
 
 data ActivityResponse = ActivityResponse
-  { identifier :: UUID,
-    displayName :: Text,
-    description :: Text,
-    createdAt :: ZonedTime,
-    timeslotGenMode :: TimeslotGenMode,
+  { activity :: Activity,
     availabilities :: [TimeRange]
   }
   deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
