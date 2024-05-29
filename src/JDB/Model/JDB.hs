@@ -6,9 +6,7 @@
 
 module JDB.Model.JDB
   ( Request,
-    validateRequest,
     Activity (..),
-    validateActivity,
     OfflineRange (..),
     ActivityResponse (..),
     TimeRange (..),
@@ -19,10 +17,7 @@ where
 import Data.Aeson hiding (Success)
 import Data.OpenApi
 import Data.Time
-import Data.Time.LocalTime
 import Data.UUID
-import Keuringsdienst
-import Keuringsdienst.Helpers
 import Optics
 import Relude
 
@@ -34,58 +29,119 @@ data TimeRange = TimeRange
 
 makeFieldLabelsNoPrefix ''TimeRange
 
-data Request = Request
+data TimeslotGenMode
+  = Monthly
+  | Daily
+  | WorkDays
+  | Weekends
+  | Hourly
+  | FiveMinutes
+  | Minute
+  | TenMinutes
+  | FifteenMinutes
+  deriving (Eq, Show, Generic, FromJSON, ToJSON, ToSchema)
+
+data PaymentStatus
+  = Paid
+  | ConfirmedNotReceived
+  | Pending
+  deriving (Eq, Show, Generic, FromJSON, ToJSON, ToSchema)
+
+--
+
+data Client = Client
   { identifier :: UUID,
-    clientIdentifier :: UUID,
-    timeRange :: TimeRange,
-    activityIdentifier :: UUID,
-    createdAt :: ZonedTime
+    displayName :: Text,
+    phoneNumber :: Text,
+    emailAddress :: Text,
+    passwordHash :: Text,
+    passwordResetToken :: Maybe Text,
+    createdAt :: ZonedTime,
+    updatedAt :: Maybe ZonedTime
   }
   deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
 
-makeFieldLabelsNoPrefix ''Request
-
-validateRequest :: Request -> ValidationResult
-validateRequest x =
-  show (x ^. #identifier)
-    |?| isNonEmptyText
-    <> show (x ^. #clientIdentifier)
-      |?| isNonEmptyText
-    <> show (x ^. #activityIdentifier)
-      |?| isNonEmptyText
-
-data TimeslotGenMode = Quarterly | Hourly | Daily
-  deriving (Eq, Show, Generic, FromJSON, ToJSON, ToSchema)
+makeFieldLabelsNoPrefix ''Client
 
 data Activity = Activity
   { identifier :: UUID,
     displayName :: Text,
     description :: Text,
+    timeslotGenMode :: TimeslotGenMode,
+    unitCost :: Text,
+    createdBy :: UUID,
     createdAt :: ZonedTime,
-    timeslotGenMode :: TimeslotGenMode
+    updatedAt :: Maybe ZonedTime
   }
   deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
 
 makeFieldLabelsNoPrefix ''Activity
 
-validateActivity :: Activity -> ValidationResult
-validateActivity x =
-  show (x ^. #identifier)
-    |?| isNonEmptyText
-    <> (x ^. #displayName)
-      |?| isNonEmptyText
-    <> (x ^. #description)
-      |?| isNonEmptyText
+data Request = Request
+  { identifier :: UUID,
+    createdBy :: UUID,
+    activityIdentifier :: UUID,
+    timeRange :: TimeRange,
+    requestAmount :: Int,
+    createdAt :: ZonedTime,
+    updatedAt :: Maybe ZonedTime
+  }
+  deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
+
+makeFieldLabelsNoPrefix ''Request
+
+data Payment = Payment
+  { identifier :: UUID,
+    requestIdentifier :: UUID,
+    paymentAmount :: Text,
+    currency :: Text,
+    paymentStatus :: PaymentStatus,
+    createdAt :: ZonedTime,
+    updatedAt :: Maybe ZonedTime
+  }
+  deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
+
+makeFieldLabelsNoPrefix ''Payment
+
+data Reservation = Reservation
+  { identifier :: UUID,
+    clientIdentifier :: UUID,
+    paymentIdentifier :: UUID,
+    activityIdentifier :: UUID,
+    timeRange :: TimeRange,
+    createdAt :: ZonedTime
+  }
+  deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
+
+makeFieldLabelsNoPrefix ''Reservation
+
+data Manager = Manager
+  { identifier :: UUID,
+    displayName :: Text,
+    phoneNumber :: Text,
+    emailAddress :: Text,
+    passwordHash :: Text,
+    passwordResetToken :: Maybe Text,
+    createdAt :: ZonedTime,
+    updatedAt :: Maybe ZonedTime
+  }
+  deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
+
+makeFieldLabelsNoPrefix ''Manager
 
 data OfflineRange = OfflineRange
   { identifier :: UUID,
+    activityIdentifier :: UUID,
     timeRange :: TimeRange,
+    createdBy :: UUID,
     createdAt :: ZonedTime,
-    activityIdentifier :: UUID
+    updatedAt :: Maybe ZonedTime
   }
   deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
 
 makeFieldLabelsNoPrefix ''OfflineRange
+
+--
 
 data ActivityResponse = ActivityResponse
   { identifier :: UUID,
@@ -93,7 +149,6 @@ data ActivityResponse = ActivityResponse
     description :: Text,
     createdAt :: ZonedTime,
     timeslotGenMode :: TimeslotGenMode,
-    offlineRanges :: [OfflineRange],
     availabilities :: [TimeRange]
   }
   deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
