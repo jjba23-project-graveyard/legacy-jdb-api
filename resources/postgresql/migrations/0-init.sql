@@ -3,6 +3,7 @@ identifier UUID NOT NULL,
 display_name VARCHAR(1024) NOT NULL,
 phone_number VARCHAR(512) NOT NULL,
 email_address VARCHAR(1024) NOT NULL,
+created_at TIMESTAMPTZ NOT NULL,
 UNIQUE(identifier),
 PRIMARY KEY (identifier)
 );
@@ -21,9 +22,9 @@ PRIMARY KEY (identifier)
 CREATE TABLE requests(
 identifier UUID NOT NULL,
 client_identifier UUID NOT NULL REFERENCES clients(identifier),
+activity_identifier UUID NOT NULL REFERENCES activities(identifier),
 slot_start TIMESTAMPTZ NOT NULL,
 slot_end TIMESTAMPTZ NOT NULL,
-activity_identifier UUID NOT NULL REFERENCES activities(identifier),
 created_at TIMESTAMPTZ NOT NULL,
 UNIQUE(identifier),
 PRIMARY KEY (identifier)
