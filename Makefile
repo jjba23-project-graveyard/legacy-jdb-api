@@ -1,8 +1,8 @@
 .PHONY: all test clean
 
 fmt:
-	find . -name '*.hs' -type f -exec ormolu --mode inplace {} \;
-	find . -name '*.nix' -exec nixfmt {} \;
+	find . -not \( -path .direnv -prune \) -not \( -path dist-newstyle -prune \) -name '*.hs' -type f -exec ormolu --mode inplace {} \;
+	find . -not \( -path .direnv -prune \) -not \( -path dist-newstyle -prune \) -name '*.nix' -exec nixfmt {} \;
 	-statix check
 	-deadnix -f
 spin-up-containers-local:
