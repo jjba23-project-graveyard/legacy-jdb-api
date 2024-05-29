@@ -12,6 +12,7 @@ module JDB.Model.JDB
     TimeRange (..),
     TimeslotGenMode (..),
     Env (..),
+    GetActivitiesResponse (..),
   )
 where
 
@@ -163,3 +164,11 @@ data ActivityResponse = ActivityResponse
   deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
 
 makeFieldLabelsNoPrefix ''ActivityResponse
+
+data GetActivitiesResponse = GetActivitiesResponse
+  { activities :: Map UUID ActivityResponse,
+    sortOrder :: [UUID]
+  }
+  deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
+
+makeFieldLabelsNoPrefix ''GetActivitiesResponse

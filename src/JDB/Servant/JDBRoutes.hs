@@ -12,7 +12,7 @@ import Servant
 healthRoute :: Handler Text
 healthRoute = liftIO (exec @HealthService $ health)
 
-getActivitiesRoute :: Env -> Handler (Map UUID ActivityResponse)
+getActivitiesRoute :: Env -> Handler GetActivitiesResponse
 getActivitiesRoute env =
   liftIO (exec @ActivityQuery $ getActivities env)
 

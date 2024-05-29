@@ -21,8 +21,8 @@ health = injectFree (Health Pure)
 
 type ActivityQuery :: Type -> Type
 data ActivityQuery a
-  = GetActivities Env (Map UUID ActivityResponse -> a)
+  = GetActivities Env (GetActivitiesResponse -> a)
   deriving (Functor)
 
-getActivities :: (ActivityQuery :<: f) => Env -> Free f (Map UUID ActivityResponse)
+getActivities :: (ActivityQuery :<: f) => Env -> Free f GetActivitiesResponse
 getActivities env = injectFree (GetActivities env Pure)

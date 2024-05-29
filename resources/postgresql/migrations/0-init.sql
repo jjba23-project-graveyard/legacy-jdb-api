@@ -12,6 +12,20 @@ UNIQUE(identifier),
 PRIMARY KEY (identifier)
 );
 
+DROP TABLE IF EXISTS managers;
+CREATE TABLE managers(
+identifier UUID NOT NULL,
+display_name VARCHAR(1024) NOT NULL,
+phone_number VARCHAR(512) NOT NULL,
+email_address VARCHAR NOT NULL,
+password_hash VARCHAR NOT NULL,
+password_reset_token VARCHAR NULL,
+created_at TIMESTAMPTZ NOT NULL,
+updated_at TIMESTAMPTZ NULL,
+UNIQUE(identifier),
+PRIMARY KEY (identifier)
+);
+
 DROP TABLE IF EXISTS activities;
 CREATE TABLE activities(
 identifier UUID NOT NULL,
@@ -64,20 +78,6 @@ slot_end TIMESTAMPTZ NOT NULL,
 created_at TIMESTAMPTZ NOT NULL,
 UNIQUE(identifier),
 UNIQUE(client_identifier, payment_identifier, activity_identifier),
-PRIMARY KEY (identifier)
-);
-
-DROP TABLE IF EXISTS managers;
-CREATE TABLE managers(
-identifier UUID NOT NULL,
-display_name VARCHAR(1024) NOT NULL,
-phone_number VARCHAR(512) NOT NULL,
-email_address VARCHAR NOT NULL,
-password_hash VARCHAR NOT NULL,
-password_reset_token VARCHAR NULL,
-created_at TIMESTAMPTZ NOT NULL,
-updated_at TIMESTAMPTZ NULL,
-UNIQUE(identifier),
 PRIMARY KEY (identifier)
 );
 

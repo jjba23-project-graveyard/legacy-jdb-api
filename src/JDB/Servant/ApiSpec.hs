@@ -26,7 +26,7 @@ type JDBHealthAPI =
   "health" :> Get '[JSON] Text
 
 type JDBActivitiesAPI =
-  "activities" :> Get '[JSON] (Map UUID ActivityResponse)
+  "activities" :> Get '[JSON] GetActivitiesResponse
     :<|> "activities" :> Capture "identifier" UUID :> Get '[JSON] ActivityResponse
 
 type JDBPublicAPI = JDBHealthAPI :<|> JDBActivitiesAPI
