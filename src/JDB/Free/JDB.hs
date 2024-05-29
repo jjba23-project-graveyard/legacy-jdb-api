@@ -1,12 +1,15 @@
 module JDB.Free.JDB
   ( health,
     HealthService (..),
-    JDB (..),
+    ActivityQuery (..),
+    getActivities
   )
 where
 
 import Free.AlaCarte
 import Relude
+import JDB.Model.JDB
+import Data.UUID
 
 type HealthService :: Type -> Type
 data HealthService a
@@ -16,6 +19,8 @@ data HealthService a
 health :: (HealthService :<: f) => Free f Text
 health = injectFree (Health Pure)
 
-type JDB :: Type -> Type
-data JDB a
-  = GetRequests (Text -> a)
+type ActivityQuery :: Type -> Type
+data ActivityQuery a
+  = GetActivities Env (Map UUID ActivityResponse -> a)
+
+getActivities env = injectFree (GetActivities env Pure)

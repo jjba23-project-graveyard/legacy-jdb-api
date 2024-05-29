@@ -54,6 +54,7 @@ library
       JDB.Health
       JDB.Model.JDB
       JDB.PostgreSQL.Migration
+      JDB.PostgreSQL.ActivityQuery
 
       
   other-modules:
