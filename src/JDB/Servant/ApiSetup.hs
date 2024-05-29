@@ -11,9 +11,11 @@ where
 
 import Data.OpenApi qualified
 import Data.Proxy
+import Data.Time
 import Database.Redis qualified as Redis
 import Hasql.Pool qualified
 import JDB.Model.Config
+import JDB.Model.JDB
 import JDB.Servant.ApiSpec
 import JDB.Servant.JDBRoutes
 import Network.Wai
@@ -31,11 +33,14 @@ docsProxy :: Proxy JDBAPIDocsServer
 docsProxy = Proxy
 
 mkApp :: AppConfig -> Hasql.Pool.Pool -> Redis.Connection -> IO Application
-mkApp _ _ _ = do
-  let apiItself = swagger :<|> wiredUpPublicServer
+mkApp cfg pool _ = do
+  now <- getZonedTime
+
+  let env = Env {pool = pool, cfg = cfg, processStartedAt = now}
+      apiItself = swagger :<|> wiredUpPublicServer env
 
   pure $ serve apiProxy apiItself
 
-wiredUpPublicServer :: Server JDBPublicAPI
-wiredUpPublicServer =
-  healthRoute :<|> getActivitiesRoute :<|> getActivityRoute
+wiredUpPublicServer :: Env -> Server JDBPublicAPI
+wiredUpPublicServer env =
+  healthRoute :<|> getActivitiesRoute env :<|> getActivityRoute

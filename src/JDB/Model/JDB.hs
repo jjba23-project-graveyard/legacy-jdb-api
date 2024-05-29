@@ -11,7 +11,7 @@ module JDB.Model.JDB
     ActivityResponse (..),
     TimeRange (..),
     TimeslotGenMode (..),
-    Env(..)
+    Env (..),
   )
 where
 
@@ -19,10 +19,10 @@ import Data.Aeson hiding (Success)
 import Data.OpenApi
 import Data.Time
 import Data.UUID
-import Optics
-import Relude
 import Hasql.Pool qualified
 import JDB.Model.Config
+import Optics
+import Relude
 
 data Env = Env
   { pool :: Hasql.Pool.Pool,
