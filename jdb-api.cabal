@@ -55,6 +55,7 @@ library
       JDB.Model.JDB
       JDB.PostgreSQL.Migration
       JDB.PostgreSQL.ActivityQuery
+      JDB.PostgreSQL.ReadAbstraction
 
       
   other-modules:
@@ -129,6 +130,7 @@ library
     , hasql-th
     , hasql-transaction
     , hedis
+    , vector
 
   default-language: GHC2021
 
