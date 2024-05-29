@@ -17,14 +17,20 @@ Welcome to the JDB API
 
 ** Running
 
+Then you can run:
+#+begin_src shell
+  make dev
+  # or nix run .# -- "resources/config/run-local.toml"
+#+end_src
+
+You will need a PostgreSQL database running and a Redis instance too:
+#+begin_src shell
+  make spin-up-containers-local
+#+end_src
+
 Some secrets are needed
 #+begin_src shell
   touch "resources/secrets/postgresql"
   touch "resources/secrets/redis"
   touch "resources/secrets/amazonses"
-#+end_src
-
-Then you can run:
-#+begin_src shell
-  nix run .# -- "resources/config/run-local.toml"
 #+end_src
