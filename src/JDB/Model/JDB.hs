@@ -13,6 +13,8 @@ module JDB.Model.JDB
     TimeslotGenMode (..),
     Env (..),
     GetActivitiesResponse (..),
+    show,
+    Prelude.read,
   )
 where
 
@@ -24,6 +26,7 @@ import Hasql.Pool qualified
 import JDB.Model.Config
 import Optics
 import Relude
+import Prelude qualified
 
 data Env = Env
   { pool :: Hasql.Pool.Pool,
@@ -53,7 +56,30 @@ data TimeslotGenMode
   | Minute
   | TenMinutes
   | FifteenMinutes
-  deriving (Eq, Show, Generic, FromJSON, ToJSON, ToSchema)
+  deriving (Eq, Generic, FromJSON, ToJSON, ToSchema)
+
+instance Show TimeslotGenMode where
+  show Monthly = "Monthly"
+  show Daily = "Daily"
+  show WorkDays = "WorkDays"
+  show Weekends = "Weekends"
+  show Hourly = "Hourly"
+  show FiveMinutes = "FiveMinutes"
+  show Minute = "Minute"
+  show TenMinutes = "TenMinutes"
+  show FifteenMinutes = "FifteenMinutes"
+
+instance Read TimeslotGenMode where
+  readsPrec _ "Monthly" = [(Monthly, "")]
+  readsPrec _ "Daily" = [(Daily, "")]
+  readsPrec _ "WorkDays" = [(WorkDays, "")]
+  readsPrec _ "Weekends" = [(Weekends, "")]
+  readsPrec _ "Hourly" = [(Hourly, "")]
+  readsPrec _ "FiveMinutes" = [(FiveMinutes, "")]
+  readsPrec _ "Minute" = [(Minute, "")]
+  readsPrec _ "TenMinutes" = [(TenMinutes, "")]
+  readsPrec _ "FifteenMinutes" = [(FifteenMinutes, "")]
+  readsPrec _ _ = []
 
 data PaymentStatus
   = Paid

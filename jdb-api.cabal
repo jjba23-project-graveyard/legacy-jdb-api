@@ -56,6 +56,7 @@ library
       JDB.PostgreSQL.Migration
       JDB.PostgreSQL.ActivityQuery
       JDB.PostgreSQL.ReadAbstraction
+      JDB.Time.TimeRangeCalculator
 
       
   other-modules:

@@ -5,10 +5,9 @@
 module JDB.PostgreSQL.ActivityQuery () where
 
 import Data.ByteString.Lazy qualified as BL
-import Data.Fixed (Pico)
 import Data.Map qualified as Map
+import Data.Text (pack, unpack)
 import Data.Time
-import Data.Time.LocalTime
 import Data.Vector qualified as V
 import Free.AlaCarte
 import Hasql.Decoders as D
@@ -18,7 +17,6 @@ import Hasql.Session qualified as Session
 import Hasql.Statement (Statement (..))
 import JDB.Free.JDB
 import JDB.Model.JDB
-import JDB.PostgreSQL.ReadAbstraction qualified as ReadAbstraction
 import NeatInterpolation
 import Optics
 import Relude
@@ -29,8 +27,8 @@ instance Exec ActivityQuery where
     let parseActivityRows = do
           mapM
             ( \row -> do
-                activityResponse <- activityFromRow zone row
-                pure (activityResponse ^. #activity % #identifier, activityResponse)
+                activity <- activityFromRow zone row
+                pure (activity ^. #identifier, activity)
             )
 
     let query =
@@ -48,76 +46,24 @@ instance Exec ActivityQuery where
     case eitherItems of
       Left e -> do
         liftIO . BL.putStr . fromString . show $ e
-        next $ GetActivitiesResponse {activities = Map.empty, sortOrder = []}
+        next Map.empty
       Right queryResults -> do
         let xs = V.toList queryResults
         parsed <- liftIO $ parseActivityRows xs
-        next $
-          GetActivitiesResponse
-            { activities = Map.fromList parsed,
-              sortOrder = map fst parsed
-            }
+        next $ Map.fromList parsed
 
-activityFromRow zone (identifier, displayName, description, _, unitCost, createdBy, createdAt, updatedAt) = do
-  availabilities <- availabilityFromMode Daily
+activityFromRow zone (identifier, displayName, description, timeslotGenMode, unitCost, createdBy, createdAt, updatedAt) = do
   pure $
-    ActivityResponse
-      { activity =
-          Activity
-            { identifier = identifier,
-              displayName = displayName,
-              description = description,
-              timeslotGenMode = Daily,
-              unitCost = unitCost,
-              createdBy = createdBy,
-              createdAt = utcToZonedTime zone createdAt,
-              updatedAt = fmap (utcToZonedTime zone) updatedAt
-            },
-        availabilities = availabilities
+    Activity
+      { identifier = identifier,
+        displayName = displayName,
+        description = description,
+        timeslotGenMode = read . unpack $ timeslotGenMode,
+        unitCost = unitCost,
+        createdBy = createdBy,
+        createdAt = utcToZonedTime zone createdAt,
+        updatedAt = fmap (utcToZonedTime zone) updatedAt
       }
-
-availabilityFromMode :: (MonadIO m) => TimeslotGenMode -> m [TimeRange]
-availabilityFromMode Daily = do
-  now <- liftIO getZonedTime
-  timeZone <- liftIO getCurrentTimeZone
-  let today = utctDay $ zonedTimeToUTC now
-
-  let mkDayAtMidnight daysToAdd =
-        utcToZonedTime timeZone
-          . localTimeToUTC timeZone
-          $ LocalTime {localDay = addDays daysToAdd today, localTimeOfDay = midnight}
-
-  let advancedRanges =
-        map
-          ( ( \day ->
-                TimeRange
-                  { slotStart = day,
-                    slotEnd = addSecondsToZonedTime timeZone 86400 day
-                  }
-            )
-              . mkDayAtMidnight
-          )
-          [0 .. daysInAdvanceToShow]
-      previousRanges =
-        map
-          ( ( \day ->
-                TimeRange
-                  { slotStart = addSecondsToZonedTime timeZone (-86400) day,
-                    slotEnd = day
-                  }
-            )
-              . mkDayAtMidnight
-          )
-          [daysInPastToShow .. 0]
-
-  pure $ previousRanges ++ advancedRanges
-  where
-    daysInAdvanceToShow = 10
-    daysInPastToShow = -2
-availabilityFromMode _ = pure []
-
-addSecondsToZonedTime :: TimeZone -> Pico -> ZonedTime -> ZonedTime
-addSecondsToZonedTime zone seconds x = utcToZonedTime zone (addUTCTime (secondsToNominalDiffTime seconds) (zonedTimeToUTC x))
 
 activityRowDecoder = D.rowVector vector
   where

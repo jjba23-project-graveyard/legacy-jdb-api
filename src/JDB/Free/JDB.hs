@@ -3,6 +3,8 @@ module JDB.Free.JDB
     HealthService (..),
     ActivityQuery (..),
     getActivities,
+    TimeRangeCalculator (..),
+    rangesFromMode,
   )
 where
 
@@ -21,8 +23,16 @@ health = injectFree (Health Pure)
 
 type ActivityQuery :: Type -> Type
 data ActivityQuery a
-  = GetActivities Env (GetActivitiesResponse -> a)
+  = GetActivities Env (Map UUID Activity -> a)
   deriving (Functor)
 
-getActivities :: (ActivityQuery :<: f) => Env -> Free f GetActivitiesResponse
+getActivities :: (ActivityQuery :<: f) => Env -> Free f (Map UUID Activity)
 getActivities env = injectFree (GetActivities env Pure)
+
+type TimeRangeCalculator :: Type -> Type
+data TimeRangeCalculator a
+  = RangesFromMode TimeslotGenMode ([TimeRange] -> a)
+  deriving (Functor)
+
+rangesFromMode :: (TimeRangeCalculator :<: f) => TimeslotGenMode -> Free f [TimeRange]
+rangesFromMode mode = injectFree (RangesFromMode mode Pure)
