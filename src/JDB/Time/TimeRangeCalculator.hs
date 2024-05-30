@@ -43,17 +43,17 @@ availabilityFromMode Hourly = do
   now <- liftIO getZonedTime
   timeZone <- liftIO getCurrentTimeZone
 
-  let advancedRanges =
-        [mkAdvanceRange timeZone . addSecondsToZonedTime timeZone now $ (i * 3600) | i <- [0 .. hoursInAdvanceToShow]]
+  -- 3600 * 1024h
+  let advanced = [0, 3600 .. 3686400]
+      advancedRanges =
+        map (mkAdvanceRange timeZone . addSecondsToZonedTime timeZone now) advanced
+      -- 3600 * 48h
+      previous = [-172800, -169200 .. 0]
       previousRanges =
-        [mkPreviousRange timeZone . addSecondsToZonedTime timeZone now $ (i * 3600) | i <- [hoursInPastToShow .. 0]]
-
-  _ <- traceM ("hourly ranges: " <> show (length previousRanges, length advancedRanges))
+        map (mkPreviousRange timeZone . addSecondsToZonedTime timeZone now) previous
 
   pure $ previousRanges ++ advancedRanges
   where
-    hoursInAdvanceToShow = 5
-    hoursInPastToShow = -4
     mkPreviousRange timeZone moment =
       TimeRange
         { slotStart = addSecondsToZonedTime timeZone moment (-3600),
