@@ -23,6 +23,8 @@ availabilityFromMode Daily = do
       previousRanges =
         map (mkPreviousRange timeZone . warpNDaysAtMidnight timeZone today) [daysInPastToShow .. 0]
 
+  _ <- traceM ("daily ranges: " <> show (length previousRanges, length advancedRanges))
+
   pure $ previousRanges ++ advancedRanges
   where
     daysInAdvanceToShow = 60
@@ -45,6 +47,8 @@ availabilityFromMode Hourly = do
         [mkAdvanceRange timeZone . addSecondsToZonedTime timeZone now $ (i * 3600) | i <- [0 .. hoursInAdvanceToShow]]
       previousRanges =
         [mkPreviousRange timeZone . addSecondsToZonedTime timeZone now $ (i * 3600) | i <- [hoursInPastToShow .. 0]]
+
+  _ <- traceM ("hourly ranges: " <> show (length previousRanges, length advancedRanges))
 
   pure $ previousRanges ++ advancedRanges
   where
