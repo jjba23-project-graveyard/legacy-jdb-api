@@ -37,29 +37,29 @@ availabilityFromMode Daily = do
         { slotStart = moment,
           slotEnd = addSecondsToZonedTime timeZone 86400 moment
         }
-availabilityFromMode Hourly = do
-  now <- liftIO getZonedTime
-  timeZone <- liftIO getCurrentTimeZone
+-- availabilityFromMode Hourly = do
+--   now <- liftIO getZonedTime
+--   timeZone <- liftIO getCurrentTimeZone
 
-  let advancedRanges =
-        map (mkAdvanceRange timeZone . warpNHours timeZone now) [0 .. hoursInAdvanceToShow]
-      previousRanges =
-        map (mkPreviousRange timeZone . warpNHours timeZone now) [hoursInPastToShow .. 0]
+--   let advancedRanges =
+--         map (mkAdvanceRange timeZone . warpNHours timeZone now) [0 .. hoursInAdvanceToShow]
+--       previousRanges =
+--         map (mkPreviousRange timeZone . warpNHours timeZone now) [hoursInPastToShow .. 0]
 
-  pure $ previousRanges ++ advancedRanges
-  where
-    hoursInAdvanceToShow = 512
-    hoursInPastToShow = -48
-    mkPreviousRange timeZone moment =
-      TimeRange
-        { slotStart = addSecondsToZonedTime timeZone (-3600) moment,
-          slotEnd = moment
-        }
-    mkAdvanceRange timeZone moment =
-      TimeRange
-        { slotStart = moment,
-          slotEnd = addSecondsToZonedTime timeZone 3600 moment
-        }
+--   pure $ previousRanges ++ advancedRanges
+--   where
+--     hoursInAdvanceToShow = 5
+--     hoursInPastToShow = -4
+--     mkPreviousRange timeZone moment =
+--       TimeRange
+--         { slotStart = addSecondsToZonedTime timeZone (-3600) moment,
+--           slotEnd = moment
+--         }
+--     mkAdvanceRange timeZone moment =
+--       TimeRange
+--         { slotStart = moment,
+--           slotEnd = addSecondsToZonedTime timeZone 3600 moment
+--         }
 availabilityFromMode _ = pure []
 
 addSecondsToZonedTime :: TimeZone -> Pico -> ZonedTime -> ZonedTime
