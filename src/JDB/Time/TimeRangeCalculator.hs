@@ -18,39 +18,62 @@ availabilityFromMode Daily = do
   timeZone <- liftIO getCurrentTimeZone
   let today = utctDay $ zonedTimeToUTC now
 
-  let mkDayAtMidnight daysToAdd =
-        utcToZonedTime timeZone
-          . localTimeToUTC timeZone
-          $ LocalTime {localDay = addDays daysToAdd today, localTimeOfDay = midnight}
-
   let advancedRanges =
-        map
-          ( ( \day ->
-                TimeRange
-                  { slotStart = day,
-                    slotEnd = addSecondsToZonedTime timeZone 86400 day
-                  }
-            )
-              . mkDayAtMidnight
-          )
-          [0 .. daysInAdvanceToShow]
+        map (mkAdvanceRange timeZone . warpNDaysAtMidnight timeZone today) [0 .. daysInAdvanceToShow]
       previousRanges =
-        map
-          ( ( \day ->
-                TimeRange
-                  { slotStart = addSecondsToZonedTime timeZone (-86400) day,
-                    slotEnd = day
-                  }
-            )
-              . mkDayAtMidnight
-          )
-          [daysInPastToShow .. 0]
+        map (mkPreviousRange timeZone . warpNDaysAtMidnight timeZone today) [daysInPastToShow .. 0]
 
   pure $ previousRanges ++ advancedRanges
   where
-    daysInAdvanceToShow = 10
+    daysInAdvanceToShow = 60
     daysInPastToShow = -2
+    mkPreviousRange timeZone moment =
+      TimeRange
+        { slotStart = addSecondsToZonedTime timeZone (-86400) moment,
+          slotEnd = moment
+        }
+    mkAdvanceRange timeZone moment =
+      TimeRange
+        { slotStart = moment,
+          slotEnd = addSecondsToZonedTime timeZone 86400 moment
+        }
+availabilityFromMode Hourly = do
+  now <- liftIO getZonedTime
+  timeZone <- liftIO getCurrentTimeZone
+
+  let advancedRanges =
+        map (mkAdvanceRange timeZone . warpNHours timeZone now) [0 .. hoursInAdvanceToShow]
+      previousRanges =
+        map (mkPreviousRange timeZone . warpNHours timeZone now) [hoursInPastToShow .. 0]
+
+  pure $ previousRanges ++ advancedRanges
+  where
+    hoursInAdvanceToShow = 512
+    hoursInPastToShow = -48
+    mkPreviousRange timeZone moment =
+      TimeRange
+        { slotStart = addSecondsToZonedTime timeZone (-3600) moment,
+          slotEnd = moment
+        }
+    mkAdvanceRange timeZone moment =
+      TimeRange
+        { slotStart = moment,
+          slotEnd = addSecondsToZonedTime timeZone 3600 moment
+        }
 availabilityFromMode _ = pure []
 
 addSecondsToZonedTime :: TimeZone -> Pico -> ZonedTime -> ZonedTime
 addSecondsToZonedTime zone seconds x = utcToZonedTime zone (addUTCTime (secondsToNominalDiffTime seconds) (zonedTimeToUTC x))
+
+warpNHours :: TimeZone -> ZonedTime -> Pico -> ZonedTime
+warpNHours zone moment hours = addSecondsToZonedTime zone (hours * 3600) moment
+
+warpNDaysAtMidnight :: TimeZone -> Day -> Integer -> ZonedTime
+warpNDaysAtMidnight timeZone today daysToAdd =
+  localTimeToZoned $
+    LocalTime
+      { localDay = addDays daysToAdd today,
+        localTimeOfDay = midnight
+      }
+  where
+    localTimeToZoned = utcToZonedTime timeZone . localTimeToUTC timeZone
