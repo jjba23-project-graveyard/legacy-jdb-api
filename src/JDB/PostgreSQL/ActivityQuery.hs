@@ -34,7 +34,7 @@ instance Exec ActivityQuery where
     let query =
           [untrimming|
           SELECT activities.identifier, activities.display_name, activities.description,
-            activities.timeslot_gen_mode, activities.unit_cost, activities.created_by,
+            activities.timeslot_gen_mode, activities.unit_cost, activities.unit_currency, activities.created_by,
             activities.created_at, activities.updated_at
           FROM activities
           ORDER BY activities.created_at DESC
@@ -52,7 +52,7 @@ instance Exec ActivityQuery where
         parsed <- liftIO $ parseActivityRows xs
         next $ Map.fromList parsed
 
-activityFromRow zone (identifier, displayName, description, timeslotGenMode, unitCost, createdBy, createdAt, updatedAt) = do
+activityFromRow zone (identifier, displayName, description, timeslotGenMode, unitCost, unitCurrency, createdBy, createdAt, updatedAt) = do
   pure $
     Activity
       { identifier = identifier,
@@ -60,6 +60,7 @@ activityFromRow zone (identifier, displayName, description, timeslotGenMode, uni
         description = description,
         timeslotGenMode = read . unpack $ timeslotGenMode,
         unitCost = unitCost,
+        unitCurrency = unitCurrency,
         createdBy = createdBy,
         createdAt = utcToZonedTime zone createdAt,
         updatedAt = fmap (utcToZonedTime zone) updatedAt
@@ -68,8 +69,9 @@ activityFromRow zone (identifier, displayName, description, timeslotGenMode, uni
 activityRowDecoder = D.rowVector vector
   where
     vector =
-      (,,,,,,,)
+      (,,,,,,,,)
         <$> D.column (D.nonNullable D.uuid)
+        <*> D.column (D.nonNullable D.text)
         <*> D.column (D.nonNullable D.text)
         <*> D.column (D.nonNullable D.text)
         <*> D.column (D.nonNullable D.text)

@@ -109,6 +109,7 @@ data Activity = Activity
     description :: Text,
     timeslotGenMode :: TimeslotGenMode,
     unitCost :: Text,
+    unitCurrency :: Text,
     createdBy :: UUID,
     createdAt :: ZonedTime,
     updatedAt :: Maybe ZonedTime

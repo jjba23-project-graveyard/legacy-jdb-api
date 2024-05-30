@@ -36,3 +36,33 @@ You will need a PostgreSQL database running and a Redis instance too:
   touch "resources/secrets/redis"
   touch "resources/secrets/amazonses"
 #+end_src
+
+You can connect to the local development PostgreSQL database to put some data in or other purposes.
+#+begin_src shell
+  psql -U jdbapi_admin jdbapi_database -h localhost -p 54432
+  # list all tables with \dt
+  # get table info with \d+ table_name
+  # list all schemas with \dn
+#+end_src
+
+Bear in mind the JDB API also takes care of schema migrations of the database.
+
+** Some test data
+
+#+begin_src sql
+
+  BEGIN;          
+  -- insert some managers which can create activities          
+  INSERT INTO managers (identifier, display_name, phone_number, email_address, password_hash, created_at)
+  VALUES ('326a5f86-2138-43d6-a397-ee47b8e4df3c', 'Joe', '0639825138', 'jjbigorra@gmail.com', '', '2024-05-30T06:29:03+00:00');
+  INSERT INTO managers (identifier, display_name, phone_number, email_address, password_hash, created_at)
+  VALUES ('e5f5dc44-9ba6-4cee-9c90-16ae2104d18e', 'Dan', '0638518239', 'danandreidobos@gmail.com', '', '2024-05-30T06:31:32+00:00');
+
+  -- insert some activities as example
+  INSERT INTO activities (identifier, display_name, description, timeslot_gen_mode, unit_cost, unit_currency, created_by, created_at)
+  VALUES ('881f108a-4ef1-4241-a7d8-4ad22cd0faa0', 'Boat Tour around caves in Carvoeiro', 'Book a boat tour around the beautiful cliffs and caves of the Algarve, in the region of Carvoeiro, Benagil, or take a Kayak or Stand Up Paddle tour.', 'Hourly', '40', 'EUR', '326a5f86-2138-43d6-a397-ee47b8e4df3c', '2024-05-20T02:01:32+00:00');
+  INSERT INTO activities (identifier, display_name, description, timeslot_gen_mode, unit_cost, unit_currency, created_by, created_at)
+  VALUES ('6be9d94d-9c14-4bd3-a068-a51b22d5e866', 'Dog-sitting in Almere', 'Betrouwbare hondenliefhebbers in de buurt passen op jouw hond.', 'Daily', '55', 'EUR', 'e5f5dc44-9ba6-4cee-9c90-16ae2104d18e', '2024-05-20T02:01:32+00:00');
+         
+  COMMIT;         
+#+end_src
