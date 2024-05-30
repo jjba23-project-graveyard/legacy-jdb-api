@@ -67,8 +67,8 @@ addSecondsToZonedTime zone x seconds = utcToZonedTime zone (addUTCTime (secondsT
 
 warpNDaysAtMidnight :: TimeZone -> Day -> Integer -> ZonedTime
 warpNDaysAtMidnight timeZone today daysToAdd =
-  localTimeToZoned
-    $ LocalTime
+  localTimeToZoned $
+    LocalTime
       { localDay = addDays daysToAdd today,
         localTimeOfDay = midnight
       }

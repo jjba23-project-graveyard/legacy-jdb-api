@@ -39,8 +39,8 @@ makeFieldLabelsNoPrefix ''Env
 --
 
 data TimeRange = TimeRange
-  { slotStart :: ZonedTime,
-    slotEnd :: ZonedTime
+  { slotStart :: !ZonedTime,
+    slotEnd :: !ZonedTime
   }
   deriving (Show, Generic, FromJSON, ToJSON, ToSchema)
 
