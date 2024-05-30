@@ -17,8 +17,8 @@ password-file = "/run/secrets/jdbapi_redis_key"
 
 [cors]
 origins = [
-  "https://jdbapi.jointhefreeworld.org",
-  "https://www.jdbapi.jointhefreeworld.org"
+  "https://api.jdb.jointhefreeworld.org",
+  "https://www.api.jdb.jointhefreeworld.org"
 ]
 methods = [ "OPTIONS", "POST", "PUT", "DELETE", "PATCH", "GET" ]
 request-headers = [ "Authorization", "Content-Type", "Credentials", "Accept" ]
@@ -28,7 +28,7 @@ same-site = "SameSiteStrict"
 secure = "Secure"
 max-age = 7200
 path = "/"
-domain = "jdbapi.jointhefreeworld.org"
+domain = "api.jdb.jointhefreeworld.org"
 session-cookie-name = "JWT-Cookie"
 
 [mail]
@@ -40,7 +40,7 @@ sender-name = "No-Reply - Jdbapi Bot"
 sender-mail = "noreply@jointhefreeworld.org"
 
 [web-frontend]
-base-url = "https://jdbapi.jointhefreeworld.org"
+base-url = "https://api.jdb.jointhefreeworld.org"
 
 [dev]
 reported-version = "production"
