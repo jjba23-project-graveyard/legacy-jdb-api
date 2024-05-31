@@ -47,6 +47,42 @@ You can connect to the local development PostgreSQL database to put some data in
 
 Bear in mind the JDB API also takes care of schema migrations of the database.
 
+** Production environment
+
+#+begin_src dot :file resources/images/production-env-diagram.png :exports results :mkdirp yes
+  digraph prodenv {
+  subgraph clusterA {
+  fontname="Inter,Helvetica,Arial,sans-serif"
+  node [ shape="box", fontname="Inter,Helvetica,Arial,sans-serif" ]
+  edge [ fontname="Inter,Helvetica,Arial,sans-serif", arrowhead="rnormal", arrowtail="dot" ]
+
+  I1 [ label="api.jdb.jointhefreeworld.org via HTTPS" ]
+  I2 [ label="AWS Cloudfront" ]
+  I3 [ label="AWS EC2 t3.small instance\nrunning NixOS" ]
+  I4 [ label="PostgreSQL + Redis" ]
+  I5 [ label="GitLab CI/CD" ]
+  I6 [ label="AWS SQS queue" ]
+  I7 [ label="Cachix binary cache" ]
+  I8 [ label="JDB API (Haskell)" ]   
+
+
+  I1 -> I2;
+  I2 -> I3;
+  I3 -> I4;
+  I3 -> I7;   
+  I5 -> I6;
+  I5 -> I7;   
+  I3 -> I6;
+  I7 -> I8;   
+
+  }
+  }
+#+end_src
+
+#+RESULTS:
+[[file:resources/images/production-env-diagram.png]]
+
+
 ** Some test data
 
 #+begin_src sql
@@ -66,3 +102,4 @@ Bear in mind the JDB API also takes care of schema migrations of the database.
          
   COMMIT;         
 #+end_src
+
